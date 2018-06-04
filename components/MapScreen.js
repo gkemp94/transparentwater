@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableHighlight, Text } from 'react-native';
-import Map from 'react-native-maps';
-import { Location, Permissions } from 'expo';
+import MapView from 'react-native-maps';
+// import { Location, Permissions } from 'expo';
 
 import { getNoticeType } from '../utils/helpers';
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 * @class TwMap
 * display of data on a map
 */
-class MapView extends React.Component {
+class MapScreen extends React.Component {
   static navigationOptions = () => {
     return {
       header: null,
@@ -42,7 +42,7 @@ class MapView extends React.Component {
   */
   componentDidMount() {
     this._findLocalMarkers();
-    this._getLocationAsync();
+    //this._getLocationAsync();
   }
 
   /**
@@ -54,12 +54,14 @@ class MapView extends React.Component {
     this._findLocalMarkers();
   }
   
+  /*
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status === 'granted') {
       var location = await Location.getCurrentPositionAsync({});
     }
   }
+  */
 
   /**
   * @function _findLocalMarkers
@@ -108,7 +110,7 @@ class MapView extends React.Component {
     };
     return (
       <View style={styles.container}>
-        <Map
+        <MapView
           style={styles.map}
           initialRegion={this.state.region}
           onRegionChangeComplete={(region) => { this.onRegionChange(region); }}
@@ -117,7 +119,7 @@ class MapView extends React.Component {
           {this.state.markers.map((notice) => {
             const type = getNoticeType(notice.NOTICETYPE[0]);
             return (
-              <Map.Marker
+              <MapView.Marker
                 key={notice.OBJECTID}
                 coordinate={{
                   latitude: notice.LAT,
@@ -126,7 +128,7 @@ class MapView extends React.Component {
                 title={notice.TITLE}
                 description={notice.NOTICETYPE[0]}
               >
-                <Map.Callout onPress={() => onPress(notice)}>
+                <MapView.Callout onPress={() => onPress(notice)}>
                   <TouchableHighlight style={{ backgroundColor: 'white' }}>
                     <View>
                       <Text>{notice.TITLE.split(' - ')[0]}</Text>
@@ -134,14 +136,18 @@ class MapView extends React.Component {
                       <Text note>{new Date(notice.STARTDATE).toLocaleDateString()}</Text>
                     </View>
                   </TouchableHighlight>
-                </Map.Callout>
-              </Map.Marker>
+                </MapView.Callout>
+              </MapView.Marker>
             );
           })}
-        </Map>
+        </MapView>
       </View>
     );
   }
 }
 
-export default MapView;
+export default MapScreen;
+
+/*
+
+        */

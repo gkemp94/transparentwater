@@ -3,7 +3,7 @@ import { Icon } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
-import { ListView, ItemView, MapView, SettingsView } from './components/';
+import { ListView, ItemView, MapScreen, SettingsView } from './components/';
 import { getInitialData } from './utils/api';
 
 const styles = StyleSheet.create({
@@ -58,7 +58,7 @@ const ListStack = createStackNavigator({
 });
 
 const MapStack = createStackNavigator({
-  List: { screen: MapView },
+  Map: { screen: MapScreen },
   Item: { screen: ItemView }
 });
 
@@ -71,7 +71,7 @@ const RootNavigation = createBottomTabNavigator(
     ListView: {
       screen: ListStack,
     },
-    MapView: {
+    MapScreen: {
       screen: MapStack,
     },
     SettingsView: {
@@ -87,7 +87,7 @@ const RootNavigation = createBottomTabNavigator(
           case 'ListView':
             iconName = 'alert';
             break;
-          case 'MapView':
+          case 'MapScreen':
             iconName = 'map';
             break;
           case 'SettingsView':
