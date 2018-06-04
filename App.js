@@ -2,16 +2,38 @@ import React from 'react';
 import { Icon } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-import ListView from './components/ListView';
-import ItemView from './components/ItemView';
-import MapView from './components/MapView';
-import SettingsView from './components/SettingsView';
+
+import { ListView, ItemView, MapView, SettingsView } from './components/';
+import { getInitialData } from './utils/api';
+
+const styles = StyleSheet.create({
+  loader: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 class App extends React.Component {
+  state = {
+    data: [],
+    refreshing: false,
+  }
+
+  componentDidMount() {
+    getInitialData().then((data) => {
+      this.setState({
+        data: data,
+      });
+    });
+  }
+
   render() {
+    const { data } = this.state;
     return (
-      <RootNavigation />
-    );
+      <RootNavigation screenProps={{data}} />
+    )
   }
 }
 
@@ -63,7 +85,7 @@ const RootNavigation = createBottomTabNavigator(
         return <Icon name={iconName} size={25} style={{ color: tintColor }} />;
       }
     }),
-    tabBarIconOptions: {
+    tabBarOptions: {
       activeTintColor: 'tomato',
       inactiveColor: 'gray',
     }
