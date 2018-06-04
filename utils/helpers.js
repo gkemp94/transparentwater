@@ -35,10 +35,10 @@ export function getNoticeType(type) {
     return {
       name: 'Traffic Distruptions',
       getIcon: () => (
-        <Icon name="traffic-cone" type="Entypo" style={[styles.icon, { color: 'orange' }]} />
+        <Icon name="traffic-cone" type="Entypo" style={[styles.icon, { color: '#BF5700' }]} />
       ),
       getStyle: () => ({
-        color: 'orange',
+        color: '#BF5700',
       }),
     };
   case 'DONOTDRINK':
@@ -85,3 +85,6 @@ export function getNoticeType(type) {
   }
 }
 
+export function formatDate(date) {
+  return date.getDate() + "/" + (date.getMonth() + 1) + "/" + (date.getYear() - 100);
+}

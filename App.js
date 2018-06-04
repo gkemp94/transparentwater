@@ -29,10 +29,25 @@ class App extends React.Component {
     });
   }
 
+  _refreshData = () => {
+    this.setState({ refreshing: true });
+    getInitialData().then((data) => {
+      this.setState({
+        data: data,
+        refreshing: false,
+      });
+    });
+  }
+
   render() {
-    const { data } = this.state;
+    const { data, refreshing } = this.state;
+    const screenProps = {
+      data,
+      refreshing,
+      refreshData: this._refreshData
+    }
     return (
-      <RootNavigation screenProps={{data}} />
+      <RootNavigation screenProps={screenProps} />
     )
   }
 }
