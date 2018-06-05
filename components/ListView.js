@@ -70,7 +70,7 @@ class ListView extends React.Component {
   render() {
     const { data, refreshData, refreshing } = this.props.screenProps;
     const onPress = (alertItem) => {
-      this.props.navigation.navigate('Details', { item: alertItem });
+      this.props.navigation.navigate('Item', { item: alertItem });
     };
     if (!data) return (<View><Text>Loading Data...</Text></View>);
     return (

@@ -8,6 +8,33 @@ const styles = StyleSheet.create({
   },
 });
 
+export const alertTypes = {
+  WATEROUTAGE: {
+    name: 'Water Outage',
+    color: 'orange',
+    iconName: 'water-off',
+    iconType: 'MaterialCommunityIcons',
+  },
+  TRAFFICDISRUPTIONS: {
+    name: 'Traffic Distruptions',
+    color: '#BF5700',
+    iconName: 'traffic-cone',
+    iconType: 'Entypo'
+  },
+  DONOTDRINK: {
+    name: 'Do Not Drink',
+    color: 'red',
+    iconName: 'circle-slash',
+    iconType: 'Octicons'
+  },
+  BOILWATERNOTICE: {
+    name: 'Boil Water Notice',
+    color: 'red',
+    iconName: 'kettle',
+    iconType: 'MaterialCommunityIcons'
+  },
+}
+
 export function groupBy(xs, key) {
   return xs.reduce((rv, x) => {
     (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -16,63 +43,21 @@ export function groupBy(xs, key) {
 }
 
 export function getNoticeType(type) {
-  switch (type) {
-  case 'WATEROUTAGE':
+  if (alertTypes[type]) {
     return {
-      name: 'Water Outage',
+      name: alertTypes[type].name,
       getIcon: () => (
         <Icon
-          name="water-off"
-          type="MaterialCommunityIcons"
-          style={[styles.icon, { color: 'orange' }]}
+          name={alertTypes[type].iconName}
+          type={alertTypes[type].iconType}
+          style={[styles.icon, { color: alertTypes[type].color }]}
         />
       ),
       getStyle: () => ({
-        color: 'orange',
+        color: alertTypes[type].color,
       }),
     };
-  case 'TRAFFICDISRUPTIONS':
-    return {
-      name: 'Traffic Distruptions',
-      getIcon: () => (
-        <Icon name="traffic-cone" type="Entypo" style={[styles.icon, { color: '#BF5700' }]} />
-      ),
-      getStyle: () => ({
-        color: '#BF5700',
-      }),
-    };
-  case 'DONOTDRINK':
-    return {
-      name: 'Do Not Drink',
-      getIcon: () => (
-        <Icon name="circle-slash" type="Octicons" style={[styles.icon, { color: 'red' }]} />
-      ),
-      getStyle: () => ({
-        color: 'red',
-      }),
-    };
-  case 'BOILWATERNOTICE':
-    return {
-      name: 'Boil Water Notice',
-      getIcon: () => (
-        <Icon name="kettle" type="MaterialCommunityIcons" style={[styles.icon, { color: 'red' }]} />
-      ),
-      getStyle: () => ({
-        color: 'red',
-      }),
-    };
-  case undefined:
-    return {
-      name: type && type.length ? type : 'Unknown Notice Type',
-      getIcon: () => (
-        <Icon name="alert" style={[styles.icon, { color: 'black' }]} />
-      ),
-      getStyle: () => ({
-        color: 'black',
-      }),
-    };
-  default:
-    // console.log(`Unknown Notice Type: ${type}`);
+  } else {
     return {
       name: type && type.length ? type : 'Unknown Notice Type',
       getIcon: () => (

@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableHighlight, Text } from 'react-native';
 import MapView from 'react-native-maps';
-// import { Location, Permissions } from 'expo';
-
-import { getNoticeType } from '../utils/helpers';
+import { getNoticeType, alertTypes } from '../utils/helpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +12,6 @@ const styles = StyleSheet.create({
   },
 });
 
-/**
-* @class TwMap
-* display of data on a map
-*/
 class MapScreen extends React.Component {
   static navigationOptions = () => {
     return {
@@ -27,50 +21,24 @@ class MapScreen extends React.Component {
 
   state = {
     region: {
-      latitude: 0,
-      longitude: 0-6.266155,
+      latitude: 53.350140,
+      longitude: -6.266155,
       latitudeDelta: 0.2,
       longitudeDelta: 0.2,
     },
     markers: [],
   }
 
-  /**
-  * @function componentDidMount
-  * function that is called after the component is initialised
-  * this calculates the initial list of markers
-  */
   componentDidMount() {
     this._findLocalMarkers();
-    //this._getLocationAsync();
+    this._getLocationAsync();
   }
 
-  /**
-  * @function onRegionChange
-  * this gets called when the user moves the map
-  */
   onRegionChange(region) {
     this.setState({ region: region });
     this._findLocalMarkers();
   }
-  
-  /*
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === 'granted') {
-      var location = await Location.getCurrentPositionAsync({});
-    }
-  }
-  */
 
-  /**
-  * @function _findLocalMarkers
-  * calculates the maximum/minimum points for the screen display
-  * only adds notices to the list if they are within these boundaries
-  * this increases loading speed
-  * whenever the setState is called and the markers item is updated,
-  * the markers shown on the map are updated automatically
-  */
   _findLocalMarkers() {
     const regionInfo = this.state.region;
     const allNotices = this.props.screenProps.data;
@@ -94,19 +62,14 @@ class MapScreen extends React.Component {
       }
     });
 
-    // console.log('No of Markers: ', localNotices.length);
     this.setState({
       markers: localNotices,
     });
   }
 
-  /**
-  * @function render
-  * renders the map and markers initially
-  */
   render() {
     const onPress = (item) => {
-      this.props.navigation.navigate('Details', { item });
+      this.props.navigation.navigate('Item', { item });
     };
     return (
       <View style={styles.container}>
@@ -118,8 +81,10 @@ class MapScreen extends React.Component {
         >
           {this.state.markers.map((notice) => {
             const type = getNoticeType(notice.NOTICETYPE[0]);
+            const color = alertTypes[notice.NOTICETYPE[0]] ? alertTypes[notice.NOTICETYPE[0]].color : '#808080';
             return (
               <MapView.Marker
+                pinColor={color}
                 key={notice.OBJECTID}
                 coordinate={{
                   latitude: notice.LAT,
@@ -147,7 +112,3 @@ class MapScreen extends React.Component {
 }
 
 export default MapScreen;
-
-/*
-
-        */
